@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Моя валентинка</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Nunito:wght@400;600;700&display=swap">
@@ -179,6 +181,16 @@
   }
   .corner-flash { position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,.9), rgba(255,255,255,0) 70%); animation: flash 1s ease-out forwards; pointer-events: none; }
   @keyframes flash { from { opacity: 1; } to { opacity: 0; } }
+
+  @media (max-width: 480px) {
+    body { font-size: 18px; }
+    .card { padding: 30px 22px 26px; border-radius: 24px; }
+    h1 { font-size: clamp(32px, 9vw, 40px); }
+    .chip { font-size: 17px; padding: 12px 18px; }
+    .btn { min-height: 54px; padding: 0 28px; font-size: 18px; }
+    .range output { font-size: 34px; }
+    .range input { height: 44px; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .fh { animation: none; display: none; }
