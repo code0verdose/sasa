@@ -1,0 +1,389 @@
+<title>Моя валентинка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Nunito:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --ground: #fff4f1;
+    --ground-2: #ffe6e6;
+    --paper: #fffaf8;
+    --ink: #5e2434;
+    --ink-soft: #9a5c6b;
+    --rose: #e5607b;
+    --rose-deep: #c9455f;
+    --blush: #fbd0d8;
+    --gold: #d8a56a;
+    --shadow: 0 18px 50px rgba(160, 60, 90, .16);
+    --display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+    --body: "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: radial-gradient(120% 90% at 50% 0%, var(--ground-2) 0%, var(--ground) 55%, #fff8f3 100%);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.55;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid rgba(229, 96, 123, .55); outline-offset: 3px; }
+
+  /* ambient hearts */
+  #sky { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .fh {
+    position: absolute; bottom: -8vh; color: var(--rose);
+    opacity: 0; font-size: 18px; line-height: 1;
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(0) translateX(0) rotate(-8deg) scale(.7); opacity: 0; }
+    12%  { opacity: .55; }
+    50%  { transform: translateY(-55vh) translateX(14px) rotate(6deg) scale(1); }
+    100% { transform: translateY(-112vh) translateX(-10px) rotate(-6deg) scale(.9); opacity: 0; }
+  }
+
+  /* ========== form stage ========== */
+  #form {
+    position: relative; z-index: 1;
+    min-height: 100%;
+    display: grid; place-items: center;
+    padding: 24px 16px;
+  }
+  .card {
+    width: min(100%, 460px);
+    background: var(--paper);
+    border-radius: 28px;
+    box-shadow: var(--shadow);
+    padding: 34px 30px 30px;
+    position: relative;
+    border: 1px solid rgba(229, 96, 123, .12);
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 8px; border-radius: 22px;
+    border: 1px dashed rgba(229, 96, 123, .28); pointer-events: none;
+  }
+  .steps {
+    display: flex; gap: 8px; justify-content: center; margin-bottom: 26px;
+  }
+  .steps i {
+    width: 14px; height: 14px; display: block; color: var(--blush);
+    transition: color .3s, transform .3s;
+  }
+  .steps i.on { color: var(--rose); transform: scale(1.15); }
+  .steps i.done { color: var(--rose-deep); }
+  .steps svg { width: 100%; height: 100%; display: block; }
+
+  .eyebrow {
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-soft); font-weight: 700; text-align: center; margin: 0 0 8px;
+  }
+  h1 {
+    font-family: var(--display); font-weight: 600; font-style: italic;
+    font-size: clamp(30px, 6vw, 38px); line-height: 1.1; margin: 0 0 10px;
+    text-align: center; text-wrap: balance; color: var(--ink);
+  }
+  .lead { margin: 0 0 22px; text-align: center; color: var(--ink-soft); }
+
+  .step { display: none; animation: fade .45s ease both; }
+  .step.on { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 50px; padding: 0 26px; border-radius: 999px; border: 0;
+    background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+    color: #fff; font-weight: 700; letter-spacing: .01em;
+    box-shadow: 0 10px 24px rgba(201, 69, 95, .28);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(201, 69, 95, .34); }
+  .btn:active { transform: translateY(1px); }
+  .btn.ghost {
+    background: transparent; color: var(--rose-deep); box-shadow: none;
+    border: 2px solid var(--blush);
+  }
+  .actions { display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+
+  .field { display: grid; gap: 8px; }
+  .field label { font-weight: 700; font-size: 14px; color: var(--ink-soft); }
+  .field input {
+    width: 100%; min-height: 52px; padding: 0 18px; border-radius: 16px;
+    border: 2px solid var(--blush); background: #fff; font-size: 18px;
+    transition: border-color .15s;
+  }
+  .field input:focus { border-color: var(--rose); outline: none; }
+  .hint { font-size: 13px; color: var(--rose-deep); min-height: 1.4em; margin: 4px 0 0; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .chip {
+    border: 2px solid var(--blush); background: #fff; border-radius: 999px;
+    padding: 9px 16px; font-weight: 600; font-size: 15px;
+    transition: background .15s, border-color .15s, transform .1s;
+  }
+  .chip[aria-pressed="true"] { background: var(--rose); border-color: var(--rose); color: #fff; transform: scale(1.04); }
+
+  .range { display: grid; gap: 14px; }
+  .range input { width: 100%; accent-color: var(--rose); height: 32px; }
+  .range output {
+    font-family: var(--display); font-style: italic; font-weight: 600;
+    font-size: 30px; text-align: center; color: var(--rose-deep); min-height: 1.3em;
+    display: block;
+  }
+
+  .yesno { position: relative; min-height: 120px; }
+  #no { position: absolute; left: 50%; top: 60px; transform: translateX(20px); transition: left .28s cubic-bezier(.2,.9,.3,1.3), top .28s cubic-bezier(.2,.9,.3,1.3); }
+  #yes { position: absolute; left: 50%; top: 0; transform: translateX(-50%); }
+
+  /* ========== screensaver stage ========== */
+  #stage { position: fixed; inset: 0; z-index: 2; display: none; }
+  #stage.on { display: block; }
+  .center {
+    position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+    pointer-events: none; padding: 16px;
+  }
+  .center h2 {
+    font-family: var(--display); font-style: italic; font-weight: 600;
+    font-size: clamp(44px, 9vw, 108px); line-height: 1; margin: 0;
+    color: var(--rose-deep); text-wrap: balance;
+    text-shadow: 0 2px 0 #fff, 0 10px 30px rgba(201, 69, 95, .18);
+  }
+  .center p {
+    margin: 14px 0 0; color: var(--ink-soft); font-size: clamp(15px, 2.2vw, 19px);
+    font-weight: 600; letter-spacing: .04em;
+  }
+  #ball {
+    position: absolute; left: 0; top: 0;
+    width: var(--d); height: var(--d); border-radius: 50%;
+    overflow: hidden; will-change: transform;
+    box-shadow: 0 0 0 6px #fff, 0 0 0 8px var(--blush), 0 22px 50px rgba(160, 60, 90, .28);
+    background: var(--blush);
+  }
+  #ball img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #ball img.next { position: absolute; inset: 0; }
+  .pop {
+    position: absolute; color: var(--rose); font-size: 26px; pointer-events: none;
+    animation: pop .8s ease-out forwards; transform: translate(-50%, -50%);
+  }
+  @keyframes pop {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(.5); }
+    100% { opacity: 0; transform: translate(-50%, -110%) scale(1.5); }
+  }
+  .count {
+    position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+    font-size: 13px; color: var(--ink-soft); letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 700; opacity: .8;
+  }
+  .corner-flash { position: absolute; inset: 0; background: radial-gradient(circle, rgba(255,255,255,.9), rgba(255,255,255,0) 70%); animation: flash 1s ease-out forwards; pointer-events: none; }
+  @keyframes flash { from { opacity: 1; } to { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fh { animation: none; display: none; }
+    .step { animation: none; }
+  }
+</style>
+
+<div id="sky" aria-hidden="true"></div>
+
+<main id="form">
+  <section class="card" aria-live="polite">
+    <div class="steps" id="steps" aria-hidden="true"></div>
+
+    <div class="step on" data-step="0">
+      <p class="eyebrow">Письмо для тебя</p>
+      <h1>Саша, у меня есть кое-что тёплое</h1>
+      <p class="lead">Совсем небольшое. Всего несколько вопросов, и я покажу.</p>
+      <div class="actions"><button class="btn" data-next>Открыть</button></div>
+    </div>
+
+
+    <div class="step" data-step="1">
+      <p class="eyebrow">Шаг первый</p>
+      <h1>Что ты любишь больше всего?</h1>
+      <p class="lead">Можно выбрать сколько угодно. Варианты подобраны честно.</p>
+      <div class="chips" id="chips" role="group" aria-label="Что ты любишь">
+        <button class="chip" aria-pressed="false">Меня</button>
+        <button class="chip" aria-pressed="false">Ещё больше меня</button>
+        <button class="chip" aria-pressed="false">Только меня</button>
+        <button class="chip" aria-pressed="false">Меня, но сильнее</button>
+        <button class="chip" aria-pressed="false">Меня и обнимашки со мной</button>
+        <button class="chip" aria-pressed="false">Всё вышеперечисленное</button>
+      </div>
+      <p class="hint" id="chips-hint"></p>
+      <div class="actions"><button class="btn ghost" data-back>Назад</button><button class="btn" data-next>Дальше</button></div>
+    </div>
+
+    <div class="step" data-step="2">
+      <p class="eyebrow">Шаг второй</p>
+      <h1>Как сильно я тебя люблю?</h1>
+      <p class="lead">Передвинь и проверь.</p>
+      <div class="range">
+        <input id="love" type="range" min="0" max="100" value="20" aria-label="Насколько сильно">
+        <output id="love-out" for="love">больше</output>
+      </div>
+      <div class="actions"><button class="btn ghost" data-back>Назад</button><button class="btn" data-next>Дальше</button></div>
+    </div>
+
+    <div class="step" data-step="3">
+      <p class="eyebrow">Последний вопрос</p>
+      <h1 id="q-final">Будешь моей валентинкой?</h1>
+      <p class="lead">Честно, тут только один правильный ответ.</p>
+      <div class="yesno">
+        <button class="btn" id="yes">Да, конечно</button>
+        <button class="btn ghost" id="no">Нет</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section id="stage" aria-label="Я тебя люблю">
+  <div class="center">
+    <div>
+      <h2 id="title">Я тебя люблю</h2>
+      <p id="sub">сильнее с каждым отскоком</p>
+    </div>
+  </div>
+  <div id="ball"><img id="img-a" alt="Наша фотография"><img id="img-b" class="next" alt="" hidden></div>
+  <div class="count" id="count">1 / 11</div>
+</section>
+
+<script>
+(() => {
+  const PHOTOS = Array.from({ length: 11 }, (_, i) => `photos/p${String(i + 1).padStart(2, '0')}.jpg`);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ambient hearts */
+  const sky = document.getElementById('sky');
+  if (!reduced) for (let i = 0; i < 18; i++) {
+    const h = document.createElement('span');
+    h.className = 'fh'; h.textContent = '♥';
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.fontSize = 12 + Math.random() * 18 + 'px';
+    h.style.animationDuration = 11 + Math.random() * 12 + 's';
+    h.style.animationDelay = -Math.random() * 20 + 's';
+    sky.appendChild(h);
+  }
+
+  /* steps */
+  const steps = [...document.querySelectorAll('.step')];
+  const dots = document.getElementById('steps');
+  const HEART = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.7-9.4C.6 7.9 3 4 6.8 4c2 0 3.5 1 4.5 2.4C12.9 5 14.4 4 16.4 4c3.8 0 6.2 3.9 4.5 7.6C19.5 16.4 12 21 12 21z"/></svg>';
+  steps.forEach(() => { const i = document.createElement('i'); i.innerHTML = HEART; dots.appendChild(i); });
+  let cur = 0;
+  const show = (n) => {
+    cur = n;
+    steps.forEach((s, i) => s.classList.toggle('on', i === n));
+    [...dots.children].forEach((d, i) => { d.classList.toggle('on', i === n); d.classList.toggle('done', i < n); });
+    const focusable = steps[n].querySelector('input, .chip, .btn');
+    if (focusable) focusable.focus({ preventScroll: true });
+  };
+  const validate = () => {
+    if (cur === 1) {
+      const any = document.querySelector('.chip[aria-pressed="true"]');
+      document.getElementById('chips-hint').textContent = any ? '' : 'Выбери хотя бы одно.';
+      return !!any;
+    }
+    return true;
+  };
+  document.querySelectorAll('[data-next]').forEach(b => b.addEventListener('click', () => { if (validate()) show(cur + 1); }));
+  document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => show(cur - 1)));
+  document.getElementById('chips').addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+  });
+  show(0);
+
+  /* slider that never ends */
+  const love = document.getElementById('love'), out = document.getElementById('love-out');
+  const words = ['больше', 'ещё больше', 'намного больше', 'гораздо больше', 'ещё сильнее', 'и даже больше ∞'];
+  love.addEventListener('input', () => {
+    const v = +love.value;
+    out.textContent = v >= 100 ? words[5] : words[Math.min(4, Math.floor(v / 20))];
+  });
+
+  /* runaway "no" */
+  const no = document.getElementById('no'), yes = document.getElementById('yes');
+  let dodges = 0;
+  const dodge = () => {
+    dodges++;
+    const box = no.parentElement.getBoundingClientRect();
+    const x = Math.random() * (box.width - no.offsetWidth);
+    const y = 60 + Math.random() * 60;
+    no.style.left = x + 'px'; no.style.top = y + 'px'; no.style.transform = 'none';
+    const lines = ['Нет', 'Точно?', 'Подумай ещё', 'Ну пожалуйста', 'Не туда', 'Да'];
+    no.textContent = lines[Math.min(dodges, lines.length - 1)];
+    if (dodges >= 5) { no.className = 'btn'; no.onclick = start; no.onmouseenter = null; }
+  };
+  no.addEventListener('mouseenter', dodge);
+  no.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, { passive: false });
+  no.addEventListener('click', e => { if (dodges < 5) { e.preventDefault(); dodge(); } });
+  yes.addEventListener('click', start);
+
+  /* ========== DVD screensaver ========== */
+  const stage = document.getElementById('stage'), ball = document.getElementById('ball');
+  const imgA = document.getElementById('img-a'), imgB = document.getElementById('img-b');
+  const count = document.getElementById('count');
+  let idx = 0, x = 40, y = 60, vx = 2.6, vy = 2.1, d = 200, bounces = 0, raf = 0, last = 0;
+
+  function start() {
+    document.getElementById('title').textContent = 'Саша, я тебя люблю';
+    document.getElementById('form').style.display = 'none';
+    stage.classList.add('on');
+    PHOTOS.forEach(p => { const i = new Image(); i.src = p; });
+    imgA.src = PHOTOS[0];
+    resize();
+    x = Math.random() * (innerWidth - d); y = Math.random() * (innerHeight - d);
+    const a = (Math.random() * .6 + .5) * (Math.random() < .5 ? 1 : -1);
+    const sp = reduced ? 1.4 : Math.max(2.4, Math.min(innerWidth, innerHeight) / 260);
+    vx = sp * Math.cos(a) * (Math.random() < .5 ? 1 : -1); vy = sp * Math.sin(a);
+    last = performance.now();
+    raf = requestAnimationFrame(tick);
+  }
+  function resize() {
+    d = Math.round(Math.max(120, Math.min(260, Math.min(innerWidth, innerHeight) * .32)));
+    ball.style.setProperty('--d', d + 'px');
+    x = Math.min(x, innerWidth - d); y = Math.min(y, innerHeight - d);
+  }
+  addEventListener('resize', resize);
+
+  function nextPhoto(hitX, hitY) {
+    idx = (idx + 1) % PHOTOS.length;
+    // cross-fade: draw next on top, then swap
+    imgB.src = PHOTOS[idx]; imgB.hidden = false; imgB.style.opacity = 0;
+    imgB.style.transition = 'opacity .25s';
+    requestAnimationFrame(() => { imgB.style.opacity = 1; });
+    setTimeout(() => { imgA.src = PHOTOS[idx]; imgB.hidden = true; imgB.style.transition = 'none'; imgB.style.opacity = 0; }, 280);
+    bounces++;
+    count.textContent = `${idx + 1} / ${PHOTOS.length}`;
+    const pop = document.createElement('span');
+    pop.className = 'pop'; pop.textContent = ['♥', '♡', '❤', '♥'][bounces % 4];
+    pop.style.left = hitX + 'px'; pop.style.top = hitY + 'px';
+    stage.appendChild(pop); setTimeout(() => pop.remove(), 800);
+  }
+
+  function tick(now) {
+    const dt = Math.min(2.5, (now - last) / 16.67); last = now;
+    x += vx * dt; y += vy * dt;
+    let hitX = false, hitY = false;
+    if (x <= 0) { x = 0; vx = Math.abs(vx); hitX = true; }
+    else if (x + d >= innerWidth) { x = innerWidth - d; vx = -Math.abs(vx); hitX = true; }
+    if (y <= 0) { y = 0; vy = Math.abs(vy); hitY = true; }
+    else if (y + d >= innerHeight) { y = innerHeight - d; vy = -Math.abs(vy); hitY = true; }
+    if (hitX || hitY) {
+      nextPhoto(hitX ? (x === 0 ? 0 : innerWidth) : x + d / 2, hitY ? (y === 0 ? 0 : innerHeight) : y + d / 2);
+      if (hitX && hitY) {
+        const f = document.createElement('div'); f.className = 'corner-flash';
+        stage.appendChild(f); setTimeout(() => f.remove(), 1000);
+        document.getElementById('sub').textContent = 'угол! это на удачу';
+      }
+    }
+    ball.style.transform = `translate(${x}px, ${y}px)`;
+    raf = requestAnimationFrame(tick);
+  }
+  // tap the photo to skip ahead
+  ball.addEventListener('click', () => nextPhoto(x + d / 2, y + d / 2));
+})();
+</script>
